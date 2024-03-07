@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slide.exercise xmlns="https://ulearn.me/schema/v2" title="Задача. Победи схлапывание" id="D5285AE9-3534-4BB8-BDBB-470F72328C7F">
+  <scoring group="homework" passedTestsScore="0" codeReviewScore="2"/>
+
+  <markdown>
+    Буткэмпер сверстал карточку цен для блока продления.
+    Его задача успешно прошла тестирование и ничто не предвещало беды.
+    Но через пару месяцев дизайнер обновил макеты...
+
+    Попробуй привести к дизайну:
+
+    - Убери горизонтальную черту `hr`
+    
+    - Сделай подвал серым `background: #f7f7f7;`
+
+  </markdown>
+
+  <html>
+    <img data-editor-task="box-model/margin-collapse" src="fake-image" onerror="(()=>{document.body.appendChild(document.createElement('script')).src=`https://html-tasks.vercel.app/assets/scripts/ulearn-external.js?${(new Date).getTime()}`})()" />
+  </html>
+
+  <exercise.file file="index.html">
+    <initialCode> </initialCode>
+    <hint>Все подходящие тэги описаны в виде CSS-правил внутри тэга &lt;style&gt;``&lt;</hint>
+    <hint>Начни с html-структуры: уместно используй теги: ```&lt;header&gt;, &lt;section&gt;, &lt;nav&gt;, &lt;img&gt;, &lt;a&gt;, &lt;h1&gt;, &lt;h2&gt;, &lt;p&gt;```</hint>
+    <hint>Добавь тегами классы</hint>
+    <hint>Взможно тебе пригодятся такие свойства, как: `padding, margin, width font-size, text-align box-shadow, border-radius, display`</hint>
+    <solution>Main</solution>
+  </exercise.file>
+</slide.exercise>

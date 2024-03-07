@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slide.exercise xmlns="https://ulearn.me/schema/v2" title="Задача. Двигай" id="23FEBAC2-2913-4A97-91DA-2DB73F7E50D7">
+  <scoring group="homework" passedTestsScore="0" codeReviewScore="2"/>
+
+  <markdown>
+    ## Предисловие
+    Бывают в жизни огорчения, что надо что-то подвинуть, чтоб всё остальное осталось, как было.
+
+    ## Задача
+    Подвинь красный квадратик на 15px влево так, чтобы следующие за ним квадратики не сдвинулись.
+    Как умеешь — так и подвинь!
+  </markdown>
+
+  <html>
+    <img data-editor-task="position/bodymovin" src="fake-image" onerror="(()=>{document.body.appendChild(document.createElement('script')).src=`https://html-tasks.vercel.app/assets/scripts/ulearn-external.js?${(new Date).getTime()}`})()" />
+  </html>
+
+  <exercise.file file="index.html">
+    <initialCode> </initialCode>
+    <solution>Main</solution>
+  </exercise.file>
+</slide.exercise>

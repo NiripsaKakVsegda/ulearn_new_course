@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список стран</title>
+
+    <!-- Подключение шрифта Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Подключение React с CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Подключение Babel для транспайлинга JSX. Предупреждение: этот метод нельзя использовать в production-коде -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+        }
+
+        .wrap {
+            padding: 0 24px;
+        }
+
+        .heading {
+            font-size: 34px;
+            font-weight: 700;
+            line-height: 40px;
+            margin-top: 42px;
+            margin-bottom: 64px;
+        }
+
+        .country-grid {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1.4;
+            max-width: 1920px;
+        }
+
+        @media screen and (min-width: 768px) {
+            .wrap {
+                padding: 0 40px;
+            }
+
+            .country-grid {
+                columns: 2;
+                column-gap: 100px;
+                column-rule: 1px solid rgba(0, 0, 0, .15);
+            }
+
+            .country-grid__item {
+                display: inline-block;
+            }
+        }
+
+        .country-letter {
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 1.16;
+            margin: 0 0 32px;
+        }
+
+        .country {
+            display: flex;
+            align-items: flex-start;
+            margin: 0 0 56px;
+        }
+
+        .country__flag {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+        }
+
+        .country__name {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1.4;
+            margin: 0 0 4px;
+        }
+
+        .country__description {
+            margin: 0;
+        }
+
+        .country__fullname {
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.3;
+            color: #aaa;
+            margin: 0 0 8px;
+        }
+
+        .country__description-wrap {
+            margin-left: 12px;
+        }
+
+        .country__stats {
+            display: flex;
+            align-items: flex-end;
+            column-gap: 16px;
+            row-gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .country__stats-item {
+            margin: 0;
+            color: #5B5B5B;
+            font-size: 14px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: wrap;
+        }
+
+        .country__stats-item-value {
+            margin: 0;
+        }
+
+        /* Скрыть на скрин-ридерах */
+        .visually-hidden {
+            display: none;
+            clip: rect(0 0 0 0);
+            clip-path: inset(50%);
+            height: 1px;
+            overflow: hidden;
+            position: absolute;
+            white-space: nowrap;
+            width: 1px;
+        }
+
+        /* Колоночность на разных экранах */
+        @media screen and (min-width: 1200px) {
+            .country-grid {
+                columns: 3;
+            }
+        }
+
+        @media screen and (min-width: 1440px) {
+            .country-grid {
+                columns: 4;
+            }
+        }
+
+        @media screen and (min-width: 1920px) {
+            .country-grid {
+                columns: 5;
+            }
+        }
+
+        /* ⭐️ Стили для принтера */
+        @media print {
+            .country-grid {
+                columns: 3;
+                column-gap: 50px;
+            }
+
+            .country-grid__item,
+            .country {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            /* Удалить последнюю страницу */
+            .country-grid {
+                margin-bottom: -56px;
+            }
+
+            .country__flag {
+                display: block;
+                box-shadow: none;
+                padding: 0;
+                border: .25mm solid black;
+            }
+        }
+
+        @media print and (orientation: landscape) {
+            .country-grid {
+                columns: 3;
+            }
+        }
+
+        @media print and (orientation: portrait) {
+            .country-grid {
+                columns: 2;
+            }
+        }
+    </style>
+</head>
+</head>
+
+<body>
+    <main class="wrap">
+        <h1 class="heading">Список стран</h1>
+
+        <div id="react-app"></div>
+    </main>
+
+    <script type="text/babel">
+        function CountryGrid({ countriesListGroupedByLetter }) {
+            return (
+                <div className="country-grid">
+                    {countriesListGroupedByLetter.map(({ letter, countries }) => (
+                        <div className="country-grid__item" key={letter}>
+                            <div className="country-letter" aria-hidden="true">{letter}</div>
+
+                            {countries.map((countryData, i) =>
+                                <Country {...countryData} key={i} />
+                            )}
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        function Country({ flag, name, fullname, population, area }) {
+            return (
+                <article className="country">
+                    <img className="country__flag" src={flag} alt="" />
+
+                    <div className="country__description-wrap">
+                        <h2 className="country__name">{name}</h2>
+
+                        <dl className="country__description">
+                            {name !== fullname && <>
+                                <dt className="visually-hidden">Полное название</dt>
+                                <dd className="country__fullname">{fullname}</dd>
+                            </>}
+
+                            <div className="country__stats">
+                                <div className="country__stats-item">
+                                    <svg width={16} height={16}><use xlinkHref="#population" /></svg>
+                                    <dt className="visually-hidden">Население</dt>
+                                    <dd className="country__stats-item-value">{population}</dd>
+                                </div>
+
+                                <div className="country__stats-item">
+                                    <svg width={16} height={16}><use xlinkHref="#area" /></svg>
+                                    <dt className="visually-hidden">Площадь</dt>
+                                    <dd className="country__stats-item-value">{area}&nbsp;км<sup>2</sup></dd>
+                                </div>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('react-app')).render(
+            <CountryGrid countriesListGroupedByLetter={getCountriesListGroupedByLetter()} />
+        );
+
+        // Данные приложения
+        function getCountriesListGroupedByLetter() { return [{ "letter": "А", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/50px-Flag_of_Australia.svg.png", "fullname": "Австралийский Союз", "name": "Австралия", "area": "7 692 024", "population": "25 901 900" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Austria.svg/50px-Flag_of_Austria.svg.png", "fullname": "Австрийская Республика", "name": "Австрия", "area": "83 870", "population": "8 214 160" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Azerbaijan.svg/50px-Flag_of_Azerbaijan.svg.png", "fullname": "Азербайджанская Республика", "name": "Азербайджан", "area": "86 600", "population": "10 000 000" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/50px-Flag_of_Albania.svg.png", "fullname": "Республика Албания", "name": "Албания", "area": "28 748", "population": "2 986 952" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Algeria.svg/50px-Flag_of_Algeria.svg.png", "fullname": "Алжирская Народная Демократическая Республика", "name": "Алжир", "area": "2 381 740", "population": "34 586 184" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Angola.svg/50px-Flag_of_Angola.svg.png", "fullname": "Республика Ангола", "name": "Ангола", "area": "1 246 700", "population": "13 068 161" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Andorra.svg/50px-Flag_of_Andorra.svg.png", "fullname": "Княжество Андорра", "name": "Андорра", "area": "468", "population": "84 525" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Flag_of_Antigua_and_Barbuda.svg/50px-Flag_of_Antigua_and_Barbuda.svg.png", "fullname": "Антигуа и Барбуда", "name": "Антигуа и Барбуда", "area": "443", "population": "86 754" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_Argentina.svg/50px-Flag_of_Argentina.svg.png", "fullname": "Аргентинская Республика", "name": "Аргентина", "area": "2 766 890", "population": "42 610 981" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_Armenia.svg/50px-Flag_of_Armenia.svg.png", "fullname": "Республика Армения", "name": "Армения", "area": "29 800", "population": "2 982 900" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_the_Taliban.svg/50px-Flag_of_the_Taliban.svg.png", "fullname": "Исламский Эмират Афганистан", "name": "Афганистан", "area": "647 500", "population": "29 121 286" }] }, { "letter": "Б", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Bahamas_Flag.svg/50px-Bahamas_Flag.svg.png", "fullname": "Содружество Багамских Островов", "name": "Багамы", "area": "13 940", "population": "310 426" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/50px-Flag_of_Bangladesh.svg.png", "fullname": "Народная Республика Бангладеш", "name": "Бангладеш", "area": "143 998", "population": "166 280 712" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Flag_of_Barbados.svg/50px-Flag_of_Barbados.svg.png", "fullname": "Барбадос", "name": "Барбадос", "area": "431", "population": "285 653" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Bahrain.svg/50px-Flag_of_Bahrain.svg.png", "fullname": "Королевство Бахрейн", "name": "Бахрейн", "area": "765", "population": "1 343 000" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Flag_of_Belarus.svg/50px-Flag_of_Belarus.svg.png", "fullname": "Республика Беларусь", "name": "Белоруссия", "area": "207 600", "population": "9 498 365" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Flag_of_Belize.svg/50px-Flag_of_Belize.svg.png", "fullname": "Белиз", "name": "Белиз", "area": "22 966", "population": "314 522" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Belgium_%28civil%29.svg/50px-Flag_of_Belgium_%28civil%29.svg.png", "fullname": "Королевство Бельгия", "name": "Бельгия", "area": "30 528", "population": "10 423 493" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_Benin.svg/50px-Flag_of_Benin.svg.png", "fullname": "Республика Бенин", "name": "Бенин", "area": "112 620", "population": "9 056 010" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Bulgaria.svg/50px-Flag_of_Bulgaria.svg.png", "fullname": "Республика Болгария", "name": "Болгария", "area": "110 910", "population": "7 148 785" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Flag_of_Bolivia_%28state%29.svg/50px-Flag_of_Bolivia_%28state%29.svg.png", "fullname": "Многонациональное Государство Боливия", "name": "Боливия", "area": "1 098 580", "population": "9 947 418" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Flag_of_Bosnia_and_Herzegovina.svg/50px-Flag_of_Bosnia_and_Herzegovina.svg.png", "fullname": "Босния и Герцеговина", "name": "Босния и Герцеговина", "area": "51 129", "population": "4 621 598" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_Botswana.svg/50px-Flag_of_Botswana.svg.png", "fullname": "Республика Ботсвана", "name": "Ботсвана", "area": "600 370", "population": "2 029 307" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/50px-Flag_of_Brazil.svg.png", "fullname": "Федеративная Республика Бразилия", "name": "Бразилия", "area": "8 511 965", "population": "201 103 330" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Brunei.svg/50px-Flag_of_Brunei.svg.png", "fullname": "Государство Бруней-Даруссалам", "name": "Бруней", "area": "5770", "population": "395 027" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Burkina_Faso.svg/50px-Flag_of_Burkina_Faso.svg.png", "fullname": "Буркина-Фасо", "name": "Буркина-Фасо", "area": "274 200", "population": "16 241 811" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Flag_of_Burundi.svg/50px-Flag_of_Burundi.svg.png", "fullname": "Республика Бурунди", "name": "Бурунди", "area": "27 830", "population": "9 863 117" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Flag_of_Bhutan.svg/50px-Flag_of_Bhutan.svg.png", "fullname": "Королевство Бутан", "name": "Бутан", "area": "38 394", "population": "699 847" }] }, { "letter": "В", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Vanuatu.svg/50px-Flag_of_Vanuatu.svg.png", "fullname": "Республика Вануату", "name": "Вануату", "area": "12 200", "population": "221 552" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/50px-Flag_of_the_United_Kingdom.svg.png", "fullname": "Соединённое Королевство Великобритании и Северной Ирландии", "name": "Великобритания", "area": "244 820", "population": "62 348 447" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/50px-Flag_of_Hungary.svg.png", "fullname": "Венгрия", "name": "Венгрия", "area": "93 030", "population": "9 992 339" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Flag_of_Venezuela_%28state%29.svg/50px-Flag_of_Venezuela_%28state%29.svg.png", "fullname": "Боливарианская Республика Венесуэла", "name": "Венесуэла", "area": "912 050", "population": "27 223 228" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_East_Timor.svg/50px-Flag_of_East_Timor.svg.png", "fullname": "Демократическая Республика Восточный Тимор", "name": "Восточный Тимор", "area": "15 007", "population": "1 154 625" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/50px-Flag_of_Vietnam.svg.png", "fullname": "Социалистическая Республика Вьетнам", "name": "Вьетнам", "area": "329 560", "population": "89 571 130" }] }, { "letter": "Г", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Flag_of_Gabon.svg/50px-Flag_of_Gabon.svg.png", "fullname": "Габонская Республика", "name": "Габон", "area": "267 667", "population": "1 545 255" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Haiti.svg/50px-Flag_of_Haiti.svg.png", "fullname": "Республика Гаити", "name": "Гаити", "area": "27 750", "population": "9 719 932" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_Guyana.svg/50px-Flag_of_Guyana.svg.png", "fullname": "Кооперативная Республика Гайана", "name": "Гайана", "area": "214 970", "population": "748 486" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_The_Gambia.svg/50px-Flag_of_The_Gambia.svg.png", "fullname": "Республика Гамбия", "name": "Гамбия", "area": "11 300", "population": "1 824 158" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Ghana.svg/50px-Flag_of_Ghana.svg.png", "fullname": "Республика Гана", "name": "Гана", "area": "239 460", "population": "24 339 838" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Guatemala.svg/50px-Flag_of_Guatemala.svg.png", "fullname": "Республика Гватемала", "name": "Гватемала", "area": "108 890", "population": "13 550 440" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Flag_of_Guinea.svg/50px-Flag_of_Guinea.svg.png", "fullname": "Гвинейская Республика", "name": "Гвинея", "area": "245 857", "population": "10 324 025" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Guinea-Bissau.svg/50px-Flag_of_Guinea-Bissau.svg.png", "fullname": "Республика Гвинея-Бисау", "name": "Гвинея-Бисау", "area": "36 120", "population": "1 565 126" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/50px-Flag_of_Germany.svg.png", "fullname": "Федеративная Республика Германия", "name": "Германия", "area": "357 021", "population": "82 282 988" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Flag_of_Honduras.svg/50px-Flag_of_Honduras.svg.png", "fullname": "Республика Гондурас", "name": "Гондурас", "area": "112 090", "population": "7 989 415" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Grenada.svg/50px-Flag_of_Grenada.svg.png", "fullname": "Гренада", "name": "Гренада", "area": "344", "population": "107 818" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/50px-Flag_of_Greece.svg.png", "fullname": "Греческая Республика", "name": "Греция", "area": "131 940", "population": "10 749 943" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Georgia.svg/50px-Flag_of_Georgia.svg.png", "fullname": "Грузия", "name": "Грузия", "area": "69 700", "population": "3 729 635" }] }, { "letter": "Д", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Denmark.svg/50px-Flag_of_Denmark.svg.png", "fullname": "Королевство Дания", "name": "Дания", "area": "43 094", "population": "5 515 575" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_Djibouti.svg/50px-Flag_of_Djibouti.svg.png", "fullname": "Республика Джибути", "name": "Джибути", "area": "23 200", "population": "740 528" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Flag_of_Dominica.svg/50px-Flag_of_Dominica.svg.png", "fullname": "Содружество Доминики", "name": "Доминика", "area": "754", "population": "72 813" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_the_Dominican_Republic.svg/50px-Flag_of_the_Dominican_Republic.svg.png", "fullname": "Доминиканская Республика", "name": "Доминикана", "area": "48 730", "population": "9 823 821" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg/50px-Flag_of_the_Democratic_Republic_of_the_Congo.svg.png", "fullname": "Демократическая Республика Конго", "name": "ДР Конго", "area": "2 345 410", "population": "70 916 439" }] }, { "letter": "Е", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/50px-Flag_of_Egypt.svg.png", "fullname": "Арабская Республика Египет", "name": "Египет", "area": "1 001 450", "population": "80 471 869" }] }, { "letter": "З", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Zambia.svg/50px-Flag_of_Zambia.svg.png", "fullname": "Республика Замбия", "name": "Замбия", "area": "752 614", "population": "13 460 305" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Flag_of_Zimbabwe.svg/50px-Flag_of_Zimbabwe.svg.png", "fullname": "Республика Зимбабве", "name": "Зимбабве", "area": "390 580", "population": "11 651 858" }] }, { "letter": "И", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Flag_of_Israel.svg/50px-Flag_of_Israel.svg.png", "fullname": "Государство Израиль", "name": "Израиль", "area": "22 072", "population": "9 136 000" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_India.svg/50px-Flag_of_India.svg.png", "fullname": "Республика Индия", "name": "Индия", "area": "3 287 590", "population": "1 173 108 018" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/50px-Flag_of_Indonesia.svg.png", "fullname": "Республика Индонезия", "name": "Индонезия", "area": "1 919 440", "population": "242 968 342" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Flag_of_Jordan.svg/50px-Flag_of_Jordan.svg.png", "fullname": "Иорданское Хашимитское Королевство", "name": "Иордания", "area": "92 300", "population": "6 407 085" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Iraq.svg/50px-Flag_of_Iraq.svg.png", "fullname": "Республика Ирак", "name": "Ирак", "area": "437 072", "population": "29 671 605" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Flag_of_Iran.svg/50px-Flag_of_Iran.svg.png", "fullname": "Исламская Республика Иран", "name": "Иран", "area": "1 648 195", "population": "76 923 300" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Ireland.svg/50px-Flag_of_Ireland.svg.png", "fullname": "Республика Ирландия", "name": "Ирландия", "area": "70 280", "population": "4 622 917" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Iceland.svg/50px-Flag_of_Iceland.svg.png", "fullname": "Исландия", "name": "Исландия", "area": "103 125", "population": "321 857" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/50px-Flag_of_Spain.svg.png", "fullname": "Королевство Испания", "name": "Испания", "area": "504 782", "population": "46 505 963" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/50px-Flag_of_Italy.svg.png", "fullname": "Итальянская Республика", "name": "Италия", "area": "301 230", "population": "58 090 681" }] }, { "letter": "Й", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Flag_of_Yemen.svg/50px-Flag_of_Yemen.svg.png", "fullname": "Йеменская Республика", "name": "Йемен", "area": "527 970", "population": "23 495 361" }] }, { "letter": "К", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Cape_Verde.svg/50px-Flag_of_Cape_Verde.svg.png", "fullname": "Республика Кабо-Верде", "name": "Кабо-Верде", "area": "4033", "population": "508 659" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Kazakhstan.svg/50px-Flag_of_Kazakhstan.svg.png", "fullname": "Республика Казахстан", "name": "Казахстан", "area": "2 724 902", "population": "19 102 465" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_Cambodia.svg/50px-Flag_of_Cambodia.svg.png", "fullname": "Королевство Камбоджа", "name": "Камбоджа", "area": "181 040", "population": "14 453 680" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Cameroon.svg/50px-Flag_of_Cameroon.svg.png", "fullname": "Республика Камерун", "name": "Камерун", "area": "475 440", "population": "19 294 149" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/50px-Flag_of_Canada_%28Pantone%29.svg.png", "fullname": "Канада", "name": "Канада", "area": "9 984 670", "population": "38 131 104" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Qatar.svg/50px-Flag_of_Qatar.svg.png", "fullname": "Государство Катар", "name": "Катар", "area": "11 437", "population": "840 926" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Kenya.svg/50px-Flag_of_Kenya.svg.png", "fullname": "Республика Кения", "name": "Кения", "area": "582 650", "population": "40 046 566" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Flag_of_Cyprus.svg/50px-Flag_of_Cyprus.svg.png", "fullname": "Республика Кипр", "name": "Кипр", "area": "9251", "population": "1 102 677" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Flag_of_Kyrgyzstan.svg/50px-Flag_of_Kyrgyzstan.svg.png", "fullname": "Киргизская Республика", "name": "Киргизия", "area": "199 951", "population": "6 389 500" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Kiribati.svg/50px-Flag_of_Kiribati.svg.png", "fullname": "Республика Кирибати", "name": "Кирибати", "area": "811", "population": "99 482" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/50px-Flag_of_the_People%27s_Republic_of_China.svg.png", "fullname": "Китайская Народная Республика", "name": "Китай", "area": "9 596 960", "population": "1 330 141 295" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Colombia.svg/50px-Flag_of_Colombia.svg.png", "fullname": "Республика Колумбия", "name": "Колумбия", "area": "1 138 910", "population": "44 205 293" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Flag_of_the_Comoros.svg/50px-Flag_of_the_Comoros.svg.png", "fullname": "Союз Коморских Островов", "name": "Коморы", "area": "2170", "population": "773 407" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_the_Republic_of_the_Congo.svg/50px-Flag_of_the_Republic_of_the_Congo.svg.png", "fullname": "Республика Конго", "name": "Конго", "area": "342 000", "population": "4 125 916" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Flag_of_North_Korea.svg/50px-Flag_of_North_Korea.svg.png", "fullname": "Корейская Народно-Демократическая Республика", "name": "КНДР", "area": "120 540", "population": "22 757 275" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/50px-Flag_of_South_Korea.svg.png", "fullname": "Республика Корея", "name": "Корея", "area": "98 480", "population": "48 636 068" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Costa_Rica_%28state%29.svg/50px-Flag_of_Costa_Rica_%28state%29.svg.png", "fullname": "Республика Коста-Рика", "name": "Коста-Рика", "area": "51 100", "population": "4 516 220" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/50px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png", "fullname": "Республика Кот-д’Ивуар", "name": "Кот-д’Ивуар", "area": "322 460", "population": "21 058 798" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/50px-Flag_of_Cuba.svg.png", "fullname": "Республика Куба", "name": "Куба", "area": "110 860", "population": "11 477 459" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Kuwait.svg/50px-Flag_of_Kuwait.svg.png", "fullname": "Государство Кувейт", "name": "Кувейт", "area": "17 820", "population": "2 789 132" }] }, { "letter": "Л", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Laos.svg/50px-Flag_of_Laos.svg.png", "fullname": "Лаосская Народно-Демократическая Республика", "name": "Лаос", "area": "236 800", "population": "6 368 162" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Latvia.svg/50px-Flag_of_Latvia.svg.png", "fullname": "Латвийская Республика", "name": "Латвия", "area": "64 589", "population": "2 067 887" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Flag_of_Lesotho.svg/50px-Flag_of_Lesotho.svg.png", "fullname": "Королевство Лесото", "name": "Лесото", "area": "30 355", "population": "1 919 552" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Liberia.svg/50px-Flag_of_Liberia.svg.png", "fullname": "Республика Либерия", "name": "Либерия", "area": "111 370", "population": "3 685 076" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Flag_of_Lebanon.svg/50px-Flag_of_Lebanon.svg.png", "fullname": "Ливанская Республика", "name": "Ливан", "area": "10 400", "population": "4 125 247" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Libya.svg/50px-Flag_of_Libya.svg.png", "fullname": "Государство Ливия", "name": "Ливия", "area": "1 759 540", "population": "5 613 380" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Flag_of_Lithuania.svg/50px-Flag_of_Lithuania.svg.png", "fullname": "Литовская Республика", "name": "Литва", "area": "65 301", "population": "2 898 062" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Flag_of_Liechtenstein.svg/50px-Flag_of_Liechtenstein.svg.png", "fullname": "Княжество Лихтенштейн", "name": "Лихтенштейн", "area": "160", "population": "35 002" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Luxembourg.svg/50px-Flag_of_Luxembourg.svg.png", "fullname": "Великое Герцогство Люксембург", "name": "Люксембург", "area": "2586", "population": "497 538" }] }, { "letter": "М", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Mauritius.svg/50px-Flag_of_Mauritius.svg.png", "fullname": "Республика Маврикий", "name": "Маврикий", "area": "2040", "population": "1 295 789" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Flag_of_Mauritania.svg/50px-Flag_of_Mauritania.svg.png", "fullname": "Исламская Республика Мавритания", "name": "Мавритания", "area": "1 030 700", "population": "3 205 060" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Madagascar.svg/50px-Flag_of_Madagascar.svg.png", "fullname": "Республика Мадагаскар", "name": "Мадагаскар", "area": "587 040", "population": "21 281 844" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Flag_of_Malawi.svg/50px-Flag_of_Malawi.svg.png", "fullname": "Республика Малави", "name": "Малави", "area": "118 480", "population": "15 447 500" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/50px-Flag_of_Malaysia.svg.png", "fullname": "Малайзия", "name": "Малайзия", "area": "329 750", "population": "28 274 729" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Mali.svg/50px-Flag_of_Mali.svg.png", "fullname": "Республика Мали", "name": "Мали", "area": "1 240 192", "population": "13 796 354" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Maldives.svg/50px-Flag_of_Maldives.svg.png", "fullname": "Мальдивская Республика", "name": "Мальдивы", "area": "298", "population": "341 256" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Malta.svg/50px-Flag_of_Malta.svg.png", "fullname": "Республика Мальта", "name": "Мальта", "area": "316", "population": "429 344" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Morocco.svg/50px-Flag_of_Morocco.svg.png", "fullname": "Королевство Марокко", "name": "Марокко", "area": "446 550", "population": "31 627 428" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_the_Marshall_Islands.svg/50px-Flag_of_the_Marshall_Islands.svg.png", "fullname": "Республика Маршалловы Острова", "name": "Маршалловы Острова", "area": "181", "population": "65 859" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/50px-Flag_of_Mexico.svg.png", "fullname": "Мексиканские Соединённые Штаты", "name": "Мексика", "area": "1 972 550", "population": "112 468 855" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Flag_of_the_Federated_States_of_Micronesia.svg/50px-Flag_of_the_Federated_States_of_Micronesia.svg.png", "fullname": "Федеративные Штаты Микронезии", "name": "Микронезия", "area": "702", "population": "107 154" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Mozambique.svg/50px-Flag_of_Mozambique.svg.png", "fullname": "Республика Мозамбик", "name": "Мозамбик", "area": "801 590", "population": "22 061 451" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Moldova.svg/50px-Flag_of_Moldova.svg.png", "fullname": "Республика Молдова", "name": "Молдавия", "area": "33 843", "population": "2 913 281" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Monaco.svg/50px-Flag_of_Monaco.svg.png", "fullname": "Княжество Монако", "name": "Монако", "area": "2,02", "population": "37 863" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Mongolia.svg/50px-Flag_of_Mongolia.svg.png", "fullname": "Монголия", "name": "Монголия", "area": "1 564 116", "population": "3 086 918" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_Myanmar.svg/50px-Flag_of_Myanmar.svg.png", "fullname": "Республика Союз Мьянма", "name": "Мьянма", "area": "676 578", "population": "53 414 374" }] }, { "letter": "Н", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Namibia.svg/50px-Flag_of_Namibia.svg.png", "fullname": "Республика Намибия", "name": "Намибия", "area": "825 418", "population": "2 128 471" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Nauru.svg/50px-Flag_of_Nauru.svg.png", "fullname": "Республика Науру", "name": "Науру", "area": "21,3", "population": "9378" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Flag_of_Nepal.svg/50px-Flag_of_Nepal.svg.png", "fullname": "Федеративная Демократическая Республика Непал", "name": "Непал", "area": "140 800", "population": "28 951 852" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Flag_of_Niger.svg/50px-Flag_of_Niger.svg.png", "fullname": "Республика Нигер", "name": "Нигер", "area": "1 267 000", "population": "15 878 271" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_Nigeria.svg/50px-Flag_of_Nigeria.svg.png", "fullname": "Федеративная Республика Нигерия", "name": "Нигерия", "area": "923 768", "population": "152 217 341" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/50px-Flag_of_the_Netherlands.svg.png", "fullname": "Королевство Нидерландов", "name": "Нидерланды", "area": "41 526", "population": "16 783 092" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Nicaragua.svg/50px-Flag_of_Nicaragua.svg.png", "fullname": "Республика Никарагуа", "name": "Никарагуа", "area": "129 494", "population": "5 995 928" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Flag_of_New_Zealand.svg/50px-Flag_of_New_Zealand.svg.png", "fullname": "Новая Зеландия", "name": "Новая Зеландия", "area": "268 680", "population": "4 443 900" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/50px-Flag_of_Norway.svg.png", "fullname": "Королевство Норвегия", "name": "Норвегия", "area": "385 186", "population": "5 047 400" }] }, { "letter": "О", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/50px-Flag_of_the_United_Arab_Emirates.svg.png", "fullname": "Объединённые Арабские Эмираты", "name": "ОАЭ", "area": "83 600", "population": "4 975 593" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/50px-Flag_of_Oman.svg.png", "fullname": "Султанат Оман", "name": "Оман", "area": "309 500", "population": "2 967 717" }] }, { "letter": "П", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/50px-Flag_of_Pakistan.svg.png", "fullname": "Исламская Республика Пакистан", "name": "Пакистан", "area": "803 940", "population": "184 404 791" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Palau.svg/50px-Flag_of_Palau.svg.png", "fullname": "Республика Палау", "name": "Палау", "area": "459", "population": "20 879" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Flag_of_Panama.svg/50px-Flag_of_Panama.svg.png", "fullname": "Республика Панама", "name": "Панама", "area": "78 200", "population": "3 410 676" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Flag_of_Papua_New_Guinea.svg/50px-Flag_of_Papua_New_Guinea.svg.png", "fullname": "Независимое Государство Папуа — Новая Гвинея", "name": "Папуа — Новая Гвинея", "area": "462 840", "population": "6 064 515" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Paraguay.svg/50px-Flag_of_Paraguay.svg.png", "fullname": "Республика Парагвай", "name": "Парагвай", "area": "406 750", "population": "6 375 830" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Flag_of_Peru_%28state%29.svg/50px-Flag_of_Peru_%28state%29.svg.png", "fullname": "Республика Перу", "name": "Перу", "area": "1 285 220", "population": "31 237 385" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Flag_of_Poland.svg/50px-Flag_of_Poland.svg.png", "fullname": "Республика Польша", "name": "Польша", "area": "312 685", "population": "38 463 689" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/50px-Flag_of_Portugal.svg.png", "fullname": "Португальская Республика", "name": "Португалия", "area": "92 391", "population": "10 735 765" }] }, { "letter": "Р", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/50px-Flag_of_Russia.svg.png", "fullname": "Российская Федерация", "name": "Россия", "area": "17 125 191", "population": "146 544 710" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Rwanda.svg/50px-Flag_of_Rwanda.svg.png", "fullname": "Республика Руанда", "name": "Руанда", "area": "26 338", "population": "11 055 976" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Romania.svg/50px-Flag_of_Romania.svg.png", "fullname": "Румыния", "name": "Румыния", "area": "237 500", "population": "21 959 278" }] }, { "letter": "С", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_El_Salvador.svg/50px-Flag_of_El_Salvador.svg.png", "fullname": "Республика Эль-Сальвадор", "name": "Сальвадор", "area": "21 040", "population": "6 052 064" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Samoa.svg/50px-Flag_of_Samoa.svg.png", "fullname": "Независимое Государство Самоа", "name": "Самоа", "area": "2944", "population": "192 001" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_San_Marino.svg/50px-Flag_of_San_Marino.svg.png", "fullname": "Республика Сан-Марино", "name": "Сан-Марино", "area": "61", "population": "31 477" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Sao_Tome_and_Principe.svg/50px-Flag_of_Sao_Tome_and_Principe.svg.png", "fullname": "Демократическая Республика Сан-Томе и Принсипи", "name": "Сан-Томе и Принсипи", "area": "1001", "population": "175 808" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/50px-Flag_of_Saudi_Arabia.svg.png", "fullname": "Королевство Саудовская Аравия", "name": "Саудовская Аравия", "area": "2 149 690", "population": "25 731 776" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_North_Macedonia.svg/50px-Flag_of_North_Macedonia.svg.png", "fullname": "Республика Северная Македония", "name": "Северная Македония", "area": "25 713", "population": "2 072 086" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Seychelles.svg/50px-Flag_of_Seychelles.svg.png", "fullname": "Республика Сейшельские Острова", "name": "Сейшелы", "area": "455", "population": "88 340" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Flag_of_Senegal.svg/50px-Flag_of_Senegal.svg.png", "fullname": "Республика Сенегал", "name": "Сенегал", "area": "196 190", "population": "12 323 252" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Flag_of_Saint_Vincent_and_the_Grenadines.svg/50px-Flag_of_Saint_Vincent_and_the_Grenadines.svg.png", "fullname": "Сент-Винсент и Гренадины", "name": "Сент-Винсент и Гренадины", "area": "389", "population": "104 217" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Saint_Kitts_and_Nevis.svg/50px-Flag_of_Saint_Kitts_and_Nevis.svg.png", "fullname": "Федерация Сент-Китс и Невис", "name": "Сент-Китс и Невис", "area": "261", "population": "49 898" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Saint_Lucia.svg/50px-Flag_of_Saint_Lucia.svg.png", "fullname": "Сент-Люсия", "name": "Сент-Люсия", "area": "616", "population": "160 922" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Flag_of_Serbia.svg/50px-Flag_of_Serbia.svg.png", "fullname": "Республика Сербия", "name": "Сербия", "area": "77 474", "population": "7 344 847" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Singapore.svg/50px-Flag_of_Singapore.svg.png", "fullname": "Республика Сингапур", "name": "Сингапур", "area": "719", "population": "6 059 766" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Flag_of_Syria.svg/50px-Flag_of_Syria.svg.png", "fullname": "Сирийская Арабская Республика", "name": "Сирия", "area": "185 180", "population": "22 198 110" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Slovakia.svg/50px-Flag_of_Slovakia.svg.png", "fullname": "Словацкая Республика", "name": "Словакия", "area": "48 845", "population": "5 470 306" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Flag_of_Slovenia.svg/50px-Flag_of_Slovenia.svg.png", "fullname": "Республика Словения", "name": "Словения", "area": "20 273", "population": "2 003 136" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/50px-Flag_of_the_United_States.svg.png", "fullname": "Соединённые Штаты Америки", "name": "США", "area": "9 826 675", "population": "310 232 863" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_the_Solomon_Islands.svg/50px-Flag_of_the_Solomon_Islands.svg.png", "fullname": "Соломоновы Острова", "name": "Соломоновы Острова", "area": "28 450", "population": "559 198" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_Somalia.svg/50px-Flag_of_Somalia.svg.png", "fullname": "Федеративная Республика Сомали", "name": "Сомали", "area": "637 657", "population": "10 112 453" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Sudan.svg/50px-Flag_of_Sudan.svg.png", "fullname": "Республика Судан", "name": "Судан", "area": "1 886 068", "population": "22 633 510" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Flag_of_Suriname.svg/50px-Flag_of_Suriname.svg.png", "fullname": "Республика Суринам", "name": "Суринам", "area": "163 270", "population": "486 618" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Sierra_Leone.svg/50px-Flag_of_Sierra_Leone.svg.png", "fullname": "Республика Сьерра-Леоне", "name": "Сьерра-Леоне", "area": "71 740", "population": "5 245 695" }] }, { "letter": "Т", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Tajikistan.svg/50px-Flag_of_Tajikistan.svg.png", "fullname": "Республика Таджикистан", "name": "Таджикистан", "area": "142 000", "population": "8 161 100" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/50px-Flag_of_Thailand.svg.png", "fullname": "Королевство Таиланд", "name": "Таиланд", "area": "514 000", "population": "67 089 500" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Tanzania.svg/50px-Flag_of_Tanzania.svg.png", "fullname": "Объединённая Республика Танзания", "name": "Танзания", "area": "945 087", "population": "41 892 895" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Flag_of_Togo.svg/50px-Flag_of_Togo.svg.png", "fullname": "Тоголезская Республика", "name": "Того", "area": "56 785", "population": "6 587 239" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Tonga.svg/50px-Flag_of_Tonga.svg.png", "fullname": "Королевство Тонга", "name": "Тонга", "area": "748", "population": "122 580" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Trinidad_and_Tobago.svg/50px-Flag_of_Trinidad_and_Tobago.svg.png", "fullname": "Республика Тринидад и Тобаго", "name": "Тринидад и Тобаго", "area": "5128", "population": "1 228 691" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Tuvalu.svg/50px-Flag_of_Tuvalu.svg.png", "fullname": "Тувалу", "name": "Тувалу", "area": "26", "population": "11 889" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Tunisia.svg/50px-Flag_of_Tunisia.svg.png", "fullname": "Тунисская Республика", "name": "Тунис", "area": "163 610", "population": "10 589 025" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Turkmenistan.svg/50px-Flag_of_Turkmenistan.svg.png", "fullname": "Туркменистан", "name": "Туркмения", "area": "488 100", "population": "4 940 916" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/50px-Flag_of_Turkey.svg.png", "fullname": "Турецкая Республика", "name": "Турция", "area": "780 580", "population": "77 804 122" }] }, { "letter": "У", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Flag_of_Uganda.svg/50px-Flag_of_Uganda.svg.png", "fullname": "Республика Уганда", "name": "Уганда", "area": "236 040", "population": "33 398 682" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Uzbekistan.svg/50px-Flag_of_Uzbekistan.svg.png", "fullname": "Республика Узбекистан", "name": "Узбекистан", "area": "447 400", "population": "34 011 621" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/50px-Flag_of_Ukraine.svg.png", "fullname": "Украина", "name": "Украина", "area": "603 549", "population": "42 481 971" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Uruguay.svg/50px-Flag_of_Uruguay.svg.png", "fullname": "Восточная Республика Уругвай", "name": "Уругвай", "area": "176 220", "population": "3 510 386" }] }, { "letter": "Ф", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Fiji.svg/50px-Flag_of_Fiji.svg.png", "fullname": "Республика Фиджи", "name": "Фиджи", "area": "18 270", "population": "875 983" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/50px-Flag_of_the_Philippines.svg.png", "fullname": "Республика Филиппины", "name": "Филиппины", "area": "300 000", "population": "99 900 177" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Finland.svg/50px-Flag_of_Finland.svg.png", "fullname": "Финляндская Республика", "name": "Финляндия", "area": "338 430", "population": "5 429 894" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_France_%281794%E2%80%931815%2C_1830%E2%80%931974%2C_2020%E2%80%93present%29.svg/50px-Flag_of_France_%281794%E2%80%931815%2C_1830%E2%80%931974%2C_2020%E2%80%93present%29.svg.png", "fullname": "Французская Республика", "name": "Франция", "area": "547 030", "population": "64 768 389" }] }, { "letter": "Х", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Croatia.svg/50px-Flag_of_Croatia.svg.png", "fullname": "Республика Хорватия", "name": "Хорватия", "area": "56 542", "population": "4 486 881" }] }, { "letter": "Ц", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Central_African_Republic.svg/50px-Flag_of_the_Central_African_Republic.svg.png", "fullname": "Центральноафриканская Республика", "name": "ЦАР", "area": "622 984", "population": "4 844 927" }] }, { "letter": "Ч", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Flag_of_Chad.svg/50px-Flag_of_Chad.svg.png", "fullname": "Республика Чад", "name": "Чад", "area": "1 284 000", "population": "10 543 464" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Montenegro.svg/50px-Flag_of_Montenegro.svg.png", "fullname": "Черногория", "name": "Черногория", "area": "13 812", "population": "666 730" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_Czech_Republic.svg/50px-Flag_of_the_Czech_Republic.svg.png", "fullname": "Чешская Республика", "name": "Чехия", "area": "78 866", "population": "10 201 707" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Flag_of_Chile.svg/50px-Flag_of_Chile.svg.png", "fullname": "Республика Чили", "name": "Чили", "area": "756 950", "population": "16 746 491" }] }, { "letter": "Ш", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/50px-Flag_of_Switzerland.svg.png", "fullname": "Швейцарская Конфедерация", "name": "Швейцария", "area": "41 290", "population": "7 623 438" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Sweden.svg/50px-Flag_of_Sweden.svg.png", "fullname": "Королевство Швеция", "name": "Швеция", "area": "449 964", "population": "9 074 055" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Flag_of_Sri_Lanka.svg/50px-Flag_of_Sri_Lanka.svg.png", "fullname": "Демократическая Социалистическая Республика Шри-Ланка", "name": "Шри-Ланка", "area": "65 610", "population": "21 513 990" }] }, { "letter": "Э", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Flag_of_Ecuador.svg/50px-Flag_of_Ecuador.svg.png", "fullname": "Республика Эквадор", "name": "Эквадор", "area": "283 560", "population": "14 790 608" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Equatorial_Guinea.svg/50px-Flag_of_Equatorial_Guinea.svg.png", "fullname": "Республика Экваториальная Гвинея", "name": "Экваториальная Гвинея", "area": "28 051", "population": "650 702" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Eritrea.svg/50px-Flag_of_Eritrea.svg.png", "fullname": "Государство Эритрея", "name": "Эритрея", "area": "121 320", "population": "5 792 984" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Flag_of_Eswatini.svg/50px-Flag_of_Eswatini.svg.png", "fullname": "Королевство Эсватини", "name": "Эсватини", "area": "17 363", "population": "1 354 051" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flag_of_Estonia.svg/50px-Flag_of_Estonia.s  vg.png", "fullname": "Эстонская Республика", "name": "Эстония", "area": "45 226", "population": "1 291 170" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_Ethiopia.svg/50px-Flag_of_Ethiopia.svg.png", "fullname": "Федеративная Демократическая Республика Эфиопия", "name": "Эфиопия", "area": "1 104 300", "population": "88 013 491" }] }, { "letter": "Ю", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Flag_of_South_Africa.svg/50px-Flag_of_South_Africa.svg.png", "fullname": "Южно-Африканская Республика", "name": "ЮАР", "area": "1 219 912", "population": "49 109 107" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_South_Sudan.svg/50px-Flag_of_South_Sudan.svg.png", "fullname": "Республика Южный Судан", "name": "Южный Судан", "area": "619 745", "population": "8 260 490" }] }, { "letter": "Я", "countries": [{ "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_Jamaica.svg/50px-Flag_of_Jamaica.svg.png", "fullname": "Ямайка", "name": "Ямайка", "area": "10 991", "population": "2 847 232" }, { "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/50px-Flag_of_Japan.svg.png", "fullname": "Государство Япония", "name": "Япония", "area": "377 835", "population": "126 804 433" }] }] }
+    </script>
+
+    <!-- Инлайновый SVG-спрайт, чтобы избежать дублирования в HTML -->
+    <svg width="0" height="0">
+        <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 11 13" id="population">
+            <path fill="#BCBCBC" d="M5.19 6.18a2.6 2.6 0 1 0 0-5.19 2.6 2.6 0 0 0 0 5.19ZM10.37 10.71v.65a.65.65 0 0 1-.65.65H.65a.65.65 0 0 1-.65-.65v-.65a3.89 3.89 0 0 1 3.89-3.89h2.6a3.89 3.89 0 0 1 3.88 3.9Z"></path>
+        </symbol>
+
+        <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 13" id="area">
+            <path fill="#BCBCBC" d="M1.23 3.57c.6.3 1.25.5 1.93.63-.12.64-.2 1.3-.21 1.98H0a5.7 5.7 0 0 1 .87-2.77l.36.16ZM1.46 2.93l-.21-.1c.8-1 1.91-1.66 3.16-1.82l-.05.08A8.01 8.01 0 0 0 3.3 3.53a6.8 6.8 0 0 1-1.85-.6ZM3.3 9.45c.2.86.53 1.66.95 2.32l.16.24a4.9 4.9 0 0 1-3.18-1.84l.2-.1a7.4 7.4 0 0 1 1.86-.62ZM3.15 8.8c-.7.14-1.36.35-1.97.65l-.33.16C.36 8.81.05 7.86 0 6.84h2.95c.02.68.07 1.34.2 1.96ZM8.68 2.77l-.13.1c-.61.32-1.3.54-2.02.68A8.01 8.01 0 0 0 5.48 1.1L5.4 1c1.3.12 2.44.78 3.27 1.78ZM8.57 10.13l.15.08a4.81 4.81 0 0 1-3.3 1.8l.17-.26c.41-.66.72-1.46.96-2.32a7.5 7.5 0 0 1 2.02.7ZM3.54 6.86h2.73c-.01.64-.09 1.26-.2 1.84a7.6 7.6 0 0 0-2.31 0c-.13-.58-.2-1.22-.22-1.84ZM9.1 9.7l-.26-.17c-.65-.34-1.39-.6-2.15-.73.13-.62.18-1.28.2-1.94H10a5.83 5.83 0 0 1-.9 2.83ZM8.86 3.45l.22-.16c.54.81.87 1.81.92 2.87H6.89c-.02-.68-.1-1.34-.22-1.98.78-.14 1.5-.4 2.15-.73h.04ZM4.92 11.63l-.18-.26a7.03 7.03 0 0 1-.83-2.02 8.92 8.92 0 0 1 2.02 0c-.2.76-.49 1.46-.85 2.04l-.16.24ZM4.92 1.39l.07.1c.4.6.7 1.34.92 2.14a8.01 8.01 0 0 1-1.99 0c.22-.8.53-1.54.93-2.12l.07-.12ZM4.94 4.36c.38 0 .76-.02 1.14-.08.12.6.18 1.24.2 1.88H3.53c.02-.66.1-1.28.2-1.88a8 8 0 0 0 1.2.08Z"></path>
+        </symbol>
+    </svg>
+</body>
+
+</html>

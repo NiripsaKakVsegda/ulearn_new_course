@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slide.exercise xmlns="https://ulearn.me/schema/v2" title="Задача. Абсолютно точно спозиционируем" id="B4585A03-C6A0-4A81-ACDE-F2758EEA96F2">
+  <scoring group="homework" passedTestsScore="0" codeReviewScore="2"/>
+
+  <markdown>
+    Давай разберёмся, относительно чего позиционируются абсолютно спозиционированные элементы, и как они влияют на поток документа
+
+    ## Задача
+    1. Облака должны быть в небе. Пусть наездник окажется вверху окна, в 250px слева. Что случилось с полем? Почему?
+    
+    2. Пусть меню действий показывается из-под облака, ровно по его ширине. Относительно чего позиционируется меню? Как можно показывать его только по наведению мышки?
+    
+    3. Приключенец должен идти по полю: в 10px слева и 20px снизу. Относительно чего позиционируется приключенец?
+  </markdown>
+
+  <html>
+    <img data-editor-task="position/absolute-1" src="fake-image" onerror="(()=>{document.body.appendChild(document.createElement('script')).src=`https://html-tasks.vercel.app/assets/scripts/ulearn-external.js?${(new Date).getTime()}`})()" />
+  </html>
+
+  <exercise.file file="index.html">
+    <initialCode> </initialCode>
+    <solution>Main</solution>
+  </exercise.file>
+</slide.exercise>

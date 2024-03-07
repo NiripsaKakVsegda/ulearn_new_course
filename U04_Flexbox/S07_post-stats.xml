@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slide.exercise xmlns="https://ulearn.me/schema/v2" title="ДЗ № 2. Статистика поста" id="18C6491C-F03D-4742-A011-3440ABFD4CBD">
+  <scoring group="homework" passedTestsScore="0" codeReviewScore="10" />
+
+  <markdown>
+    Приведи блок к макету
+
+    1. Сверстай. Некоторые данные о макете:
+
+      - Фон блоков со статистикой #c2c2c2
+
+      - Размеры шрифтов — 13px / 24px / 36px
+
+      - Отступы 16px
+
+    2. Расставь подписи под графиком
+
+    3. Разместить статистику так, чтобы блоки переносились и занимали все доступное доступное пространство.
+
+    4*. Подумай как поместить 69% на График
+
+    [![Макет](https://i.ibb.co/hcfFHKr/2022-02-14-04-20-10.png)](https://i.ibb.co/hcfFHKr/2022-02-14-04-20-10.png)
+  </markdown>
+
+  <html>
+    <img data-editor-task="flex/horizontal-2" src="fake-image" onerror="(()=>{document.body.appendChild(document.createElement('script')).src=`https://html-tasks.vercel.app/assets/scripts/ulearn-external.js?${(new Date).getTime()}`})()" />
+  </html>
+
+  <exercise.file file="index.html">
+    <initialCode> </initialCode>
+    <solution>Main</solution>
+  </exercise.file>
+</slide.exercise>

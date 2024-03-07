@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slide.exercise xmlns="https://ulearn.me/schema/v2" title="Задача. Кнопка в ссылку" id="9031AEA7-B339-4E98-8B69-A469DC572C30">
+  <scoring group="homework" passedTestsScore="0" codeReviewScore="2"/>
+
+  <markdown>
+    Дизайнер нарисовал вам ссылку, которая открывает лайтбокс.
+    Поскольку при нажатии на ссылку URL страницы не меняется,
+    вы принимаете решение стилизовать тег `button` в ссылку.
+        
+    ## Задача
+    Стилизуйте `button` с классом `.link` с учетом дизайна:
+    
+    - Размер шрифта: 19px
+
+    - Цвет текста ссылки: #3072c4
+
+    - Цвет текста ссылки при наведении: #5080b7
+  </markdown>
+
+  <html>
+    <img data-editor-task="semantics/button-to-link" src="fake-image" onerror="(()=>{document.body.appendChild(document.createElement('script')).src=`https://html-tasks.vercel.app/assets/scripts/ulearn-external.js?${(new Date).getTime()}`})()" />
+  </html>
+
+  <exercise.file file="index.html">
+    <initialCode> </initialCode>
+    <hint>Все подходящие тэги описаны в виде CSS-правил внутри тэга ```&lt;style&gt;```</hint>
+    <solution>Main</solution>
+  </exercise.file>
+</slide.exercise>

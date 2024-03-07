@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slide.exercise xmlns="https://ulearn.me/schema/v2" title="Задача. Залипательный список" id="07C1F9F9-7F56-45AD-8CD4-2D4B70F29DD7">
+  <scoring group="homework" passedTestsScore="0" codeReviewScore="2"/>
+
+  <markdown>
+    ## Предисловие
+
+    Дизайнер решил чуть облегчить жизнь пользователям, которым постоянно надо просматривать огромные списки городов, отсортированных по алфавиту.
+    При скроле первая буква из названия всегда закреплена вверху списка.
+
+    ## Задача
+
+    - Ограничь по высоте 400px
+
+    - Настрой вертикальный скролл контейнера
+
+    - «Прилепи» буквы к верхней части блока при скролле (результат смотри на .gif в презентации)
+  </markdown>
+
+  <html>
+    <img data-editor-task="position/city" src="fake-image" onerror="(()=>{document.body.appendChild(document.createElement('script')).src=`https://html-tasks.vercel.app/assets/scripts/ulearn-external.js?${(new Date).getTime()}`})()" />
+  </html>
+
+  <exercise.file file="index.html">
+    <initialCode> </initialCode>
+    <solution>Main</solution>
+  </exercise.file>
+</slide.exercise>
