@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slide.exercise xmlns="https://ulearn.me/schema/v2" title="Задача. Анимированная кнопка ⭐️" id="977E2E35-2EC6-49F7-909C-F5E6A8F60655">
+  <scoring group="homework" passedTestsScore="0" codeReviewScore="3"/>
+
+  <html>
+    <img src="https://i.ibb.co/TrDhXQW/ezgif-3-c06c4c96b6.gif" />
+  </html>
+
+  <markdown>
+    📝 Исходный файл с заданием [button-animated.zip](src/button-animated.zip) (с index.html внутри)
+    
+    ---
+    
+    Заверстай анимированную кнопку, как на картинке. Попробуй свойства:
+
+    - [position](https://developer.mozilla.org/en-US/docs/Web/CSS/position) или [transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform) для выравнивания
+    - [transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) для плавности
+    - `:before`, `:after`, чтобы не писать много html
+  </markdown>
+
+  <exercise.file file="index.html">
+    <initialCode> </initialCode>
+    <solution>Main</solution>
+  </exercise.file>
+</slide.exercise>

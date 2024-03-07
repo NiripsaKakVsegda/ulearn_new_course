@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<course xmlns="https://ulearn.me/schema/v2" title="Верстка">
+  <enableCodeReviewAndQuizManualCheckForEveryone>true</enableCodeReviewAndQuizManualCheckForEveryone>
+  <defaultLanguage>html</defaultLanguage>
+  <units>
+    <add>*/Unit.xml</add>
+  </units>
+  <scoring defaultQuiz="laboratory" defaultExercise="homework" default="laboratory">
+    <group id="laboratory" abbr="ЛЗ" maxAdditionalScore="0">Лабораторные занятия</group>
+    <group id="homework" abbr="ДЗ" maxAdditionalScore="0">Домашняя работа</group>
+    <group id="activity" abbr="Акт" maxAdditionalScore="20" enableForEveryone="true">Активность на уроках</group>
+  </scoring>
+</course>

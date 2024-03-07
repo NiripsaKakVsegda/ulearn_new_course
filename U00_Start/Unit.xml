@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<unit xmlns="https://ulearn.me/schema/v2" title="👕 Тестовое" id="03174386-3F60-4310-8D4B-1652114E20C1">
+  <slides>
+    <isExtraContent>true</isExtraContent>
+    <add>S*.xml</add>
+  </slides>
+</unit>
