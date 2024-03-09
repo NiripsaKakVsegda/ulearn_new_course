@@ -1,13 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<course xmlns="https://ulearn.me/schema/v2" title="Новый курс">
-  <enableCodeReviewAndQuizManualCheckForEveryone>true</enableCodeReviewAndQuizManualCheckForEveryone>
-  <defaultLanguage>html</defaultLanguage>
+<?xml-model href="ulearn.xsd"?>
+<course xmlns="https://ulearn.me/schema/v2" title="Шаблон курса для ulearn.me">
+  <enableCodeReviewAndQuizManualCheckForEveryone>false</enableCodeReviewAndQuizManualCheckForEveryone>
+  <dictionaryFile>dictionary.txt</dictionaryFile>
+  <defaultLanguage>python3</defaultLanguage>
   <units>
-    <add>*/Unit.xml</add>
+    <add>U*/unit.xml</add>
   </units>
-  <scoring defaultQuiz="laboratory" defaultExercise="homework" default="laboratory">
-    <group id="laboratory" abbr="ЛЗ" maxAdditionalScore="0">Лабораторные занятия</group>
-    <group id="homework" abbr="ДЗ" maxAdditionalScore="0">Домашняя работа</group>
-    <group id="activity" abbr="Акт" maxAdditionalScore="20" enableForEveryone="true">Активность на уроках</group>
+  <scoring defaultQuiz="hw" defaultExercise="hw" default="hw">
+    <group id="hw" abbr="ДЗ">Домашняя работа</group>
   </scoring>
 </course>
