@@ -20,6 +20,9 @@ __Markdown__ разметку `текста`.
         * вложенный ненумерованный
 
 [Markdown Extra](https://michelf.ca/projects/php-markdown/extra) фичи. 
+```
+print('Hello World!');
+```
 
 В частности, простые таблицы:
 
@@ -30,6 +33,9 @@ Header 1				| h2
       <note>Какая-то заметка</note>
       <code language="javascript">
           console.log('Hello World!');
+      </code>
+      <code language="csharp">
+          Console.WriteLine("Hello World!");
       </code>
   </markdown>
   <spoiler text="Можно прятать спойлер под кнопку">
