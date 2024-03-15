@@ -28,7 +28,9 @@ Header 1				| h2
 *Content1*				| 42
 `Content Cell`	| 100500
       <note>Какая-то заметка</note>
-      <code language="js">console.log('Hello World!');</code>
+      <code language="js">
+          console.log(\'Hello World!\');
+      </code>
   </markdown>
   <spoiler text="Можно прятать спойлер под кнопку">
     <markdown>
