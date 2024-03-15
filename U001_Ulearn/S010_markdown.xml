@@ -27,6 +27,8 @@ Header 1				| h2
 -------------		| -------------:
 *Content1*				| 42
 `Content Cell`	| 100500
+      <note>Какая-то заметка</note>
+      <code language="js">console.log('Hello World!');</code>
   </markdown>
   <spoiler text="Можно прятать спойлер под кнопку">
     <markdown>
@@ -39,5 +41,8 @@ Header 1				| h2
   <markdown>
     Можно вставлять видео с youtube:
   </markdown>
+    <spoiler text="">
+        <
+    </spoiler>
   <youtube>dYEutOH_dXA</youtube>
 </slide>
