@@ -32,7 +32,9 @@ Header 1				| h2
 `Content Cell`	| 100500
       <note>Какая-то заметка</note>
       <code language="javascript">
-          console.log('Hello World!');
+          useEffect(() => {
+            console.log(courseData);
+          }, [courseData]);
       </code>
       <code language="csharp">
           Console.WriteLine("Hello World!");
