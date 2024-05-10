@@ -47,6 +47,11 @@ Header 1				| h2
   </spoiler>
   <html>
      Можно вставлять <span style="color:red;font-size:20pt">произвольный HTML</span>
+      <div>
+          <h1>Header 1</h1>
+          <p>Some text in paragraph</p>
+          <span>Some text in span</span>
+      </div>
   </html>
   <markdown>
     Можно вставлять видео с youtube:
