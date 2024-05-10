@@ -53,7 +53,7 @@ Header 1				| h2
   </markdown>
   <tex>
     <line>x = 1</line>
-    <line>a_i = \left{(}\frac{n(n+1)}{2}\right{)}</line>
+    <line>$a_i = \frac{n}{2}$</line>
   </tex>
   <youtube>dYEutOH_dXA</youtube>
 </slide>
