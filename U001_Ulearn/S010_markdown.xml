@@ -56,4 +56,11 @@ Header 1				| h2
     <line>a_i = \frac{n}{2}</line>
   </tex>
   <youtube>dYEutOH_dXA</youtube>
+  <code language="csharp">
+    Console.WriteLine("Hello World!");
+  </code>
+    <selfCheckups>
+        <checkup>Пункт 1</checkup>
+        <checkup>Пункт 2</checkup>
+    </selfCheckups>
 </slide>
