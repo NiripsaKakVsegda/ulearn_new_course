@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<slide id="311916b8-81e9-451e-9836-5b52c3c0f4fd" title="Что тут можно делать?" xmlns="https://ulearn.me/schema/v2">
+    <spoiler text="А это спойлер, при открытии которого...">
+        <markdown>... можно увидеть видео!</markdown>
+        <youtube>_tA1nP1iits</youtube>
+    </spoiler>
+    <html>Здесь можно написать любой валидный html, даже 
+        <span style="color:red; font-size:20pt">вот такие штуки</span>
+    </html>
+    <markdown># Это заголовок
+## Это заголовок поменьше
+### Заголовок еще меньше
+
+Здесь можно писать **любой** `markdown` __текст__.
+
+Список:
+
+1. Элемент раз
+2. Элемент два
+    1. Вложенный нумерованный
+        * вложенный ненумерованный
+
+В частности, простые таблицы:
+
+Header 1	| h2
+-------------	| -------------:
+*Content1*	| 42
+`Content Cell`	| 100500
+        <note>
+Эта заметка не будет видна студентам</note>
+        <code language="csharp">Console.WriteLine("Hello world!");</code>
+    </markdown>
+</slide>
